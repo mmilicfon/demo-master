@@ -3,10 +3,13 @@ package com.mm.app.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -63,6 +66,16 @@ public class UserServiceTests {
 		assertThrows(InvalidEntityException.class, () -> {
 			userService.deleteById(user.getId());
 		});
+	}
+
+	@Test
+	public void findAllTest() {
+		User user1 = new User(5l, "US_5", "US_5", "us5@mail.com", "us5");
+		User user2 = new User(6l, "US_6", "US_6", "us6@mail.com", "us6");
+		when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+		List<User> users = userService.findAll();
+		assertTrue(users.contains(user1));
+		assertTrue(users.contains(user2));
 	}
 
 }
